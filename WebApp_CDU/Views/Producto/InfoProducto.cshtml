@@ -1,0 +1,174 @@
+﻿@using WebApp_CDU.Models;
+
+@model WebApp_CDU.Models.InfoProducto
+
+<div>
+    <h4>Producto</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Producto.Numero)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Producto.Numero)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Producto.Marca)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Producto.Marca)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Producto.Cupo)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Producto.Cupo)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Producto.FechaExpedicion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Producto.FechaExpedicion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Producto.FechaVencimiento)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Producto.FechaVencimiento)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Producto.TasaInteres)
+        </dt>
+
+        <dd>
+            @(Model.Producto.TasaInteres * 100)%
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Producto.FechaCorte)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Producto.FechaCorte)/@(DateTime.Now.Day > Model.Producto.FechaCorte ? DateTime.Now.AddMonths(1).Month : DateTime.Now.Month)/@DateTime.Now.Year
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Producto.Estado)
+        </dt>
+
+        <dd id="EstadoProducto">
+            @Html.DisplayFor(model => model.Producto.Estado)
+        </dd>
+    </dl>
+    <hr />
+    <dl class="dl-horizontal">
+        @if (Singleton.Instance.ConfiguracionEntorno.ConsultaCupoCompra)
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.CupoCompra)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.CupoCompra)
+            </dd>
+        }
+
+        @if (Singleton.Instance.ConfiguracionEntorno.ConsultaCupoAvance)
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.CupoAvance)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.CupoAvance)
+            </dd>
+        }
+
+        @if (Singleton.Instance.ConfiguracionEntorno.ConsultaValorPagoMinimo)
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.ValorPagoMinimo)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.ValorPagoMinimo)
+            </dd>
+        }
+
+        @if (Singleton.Instance.ConfiguracionEntorno.ConsultaValorPagoTotal)
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.ValorPagoTotal)
+            </dt>
+            <dd>
+                @Html.DisplayFor(model => model.ValorPagoTotal)
+            </dd>
+        }
+        </dl>
+
+    @if (Singleton.Instance.ConfiguracionEntorno.BloqueoProducto)
+    {
+        <a href="javascript:Alerta.PreguntaActualizarEstadoProducto(@Model.Producto.Numero, 'Bloqueado');" id="bloquearProducto">Bloquear producto</a>
+    }
+</div>
+@*<p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Numero }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>*@
+
+<hr />
+<br />
+
+@if (Model.Producto.Movimientos != null && Model.Producto.Movimientos.Count > 0)
+{
+    <h4>Movimientos</h4>
+    @*<p>
+            @Html.ActionLink("Create New", "Create")
+        </p>*@
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Producto.Movimientos[0].Fecha)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Producto.Movimientos[0].Concepto)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Producto.Movimientos[0].Valor)
+            </th>
+            @*<th></th>*@
+        </tr>
+
+        @foreach (var item in Model.Producto.Movimientos)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Fecha)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Concepto)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Valor)
+                </td>
+                @*<td>
+                        @Html.ActionLink("Edit", "Edit", new { id = item.IdMovimiento }) |
+                        @Html.ActionLink("Details", "Details", new { id = item.IdMovimiento }) |
+                        @Html.ActionLink("Delete", "Delete", new { id = item.IdMovimiento })
+                    </td>*@
+            </tr>
+        }
+
+    </table>
+}
+else
+{
+    <h4>No se encontraron movimientos para este producto.</h4>
+}

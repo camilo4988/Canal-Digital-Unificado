@@ -1,0 +1,98 @@
+﻿@model WebApp_CDU.Models.Cliente
+
+<div>
+    <h4>Cliente</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Nombre)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Nombre)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Identificacion)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Identificacion)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.CorreoElectronico)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.CorreoElectronico)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Celular)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Celular)
+        </dd>
+    </dl>
+</div>
+@*<p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Identificacion }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>*@
+
+<hr />
+<br />
+
+@if (Model.Productos != null && Model.Productos.Count > 0)
+{
+    <h4>Tus productos</h4>
+    @*<p>
+            @Html.ActionLink("Create New", "Create")
+        </p>*@
+    <table class="table">
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Productos[0].Marca)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Productos[0].Numero)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Productos[0].Cupo)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Productos[0].FechaCorte)
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model.Productos)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Marca)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Numero)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cupo)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FechaCorte)/@(DateTime.Now.Day > item.FechaCorte ? DateTime.Now.AddMonths(1).Month : DateTime.Now.Month)/@DateTime.Now.Year
+                </td>
+                <td>
+                    @*Html.ActionLink("Ver detalles", "ObtenerDetalleProducto", new { id = item.Numero })*@
+                    <a href="javascript:VerDetalleProducto(@item.Numero);">Ver detalles</a>
+                </td>
+            </tr>
+        }
+
+    </table>
+}
+else
+{
+    <h4>No se encontraron productos activos.</h4>
+}

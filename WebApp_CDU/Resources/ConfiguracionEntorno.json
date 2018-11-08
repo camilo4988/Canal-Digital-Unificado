@@ -1,0 +1,15 @@
+{
+  "NombreCanalDigital": "Canal Digital Unificado",
+  "MetodoAutenticacion": 0,
+  "AsignacionClave": false,
+  "ConsultaCupoCompra": true,
+  "ConsultaCupoAvance": true,
+  "ConsultaValorPagoMinimo": true,
+  "ConsultaValorPagoTotal": true,
+  "BloqueoProducto": true,
+  "RealizarPago": false,
+  "GeneracionExtracto": false,
+  "ConsultaPagos": false,
+  "CantidadDiasMovimientos": 30,
+  "ActualizacionDatosCliente": false
+}

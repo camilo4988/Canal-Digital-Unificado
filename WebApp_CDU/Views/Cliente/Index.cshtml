@@ -1,0 +1,75 @@
+﻿@using WebApp_CDU.Models;
+
+@model WebApp_CDU.Models.Autenticacion
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<h2>Autenticación</h2>
+
+
+@*using (Html.BeginForm("Autenticar", "Cliente", FormMethod.Post)) *@
+@using (Ajax.BeginForm("Autenticar", "Cliente", new AjaxOptions { HttpMethod = "POST",
+                                                                  OnSuccess = "DesplegarInfoCliente",
+                                                                  OnFailure = "NotificarErrorAutenticacion",
+                                                                  OnBegin = "MostrarCargador", 
+                                                                    AllowCache = false }, 
+                                                new { @id = "formAutenticacion",
+                                                      @autocomplete = "off"} ))
+{
+    @Html.AntiForgeryToken()
+
+    <div class="form-horizontal">
+        <!--<h4>Autenticacion</h4>-->
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            @Html.LabelFor(model => model.Identificacion, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Identificacion, new { htmlAttributes = new { @class = "form-control", @autoclomplete = "off" } })
+                @Html.ValidationMessageFor(model => model.Identificacion, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        @if (ViewBag.TipoAutenticacion == TipoAutenticacion.Clave) { 
+            <div class="form-group">
+                @Html.LabelFor(model => model.Clave, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Clave, new { htmlAttributes = new { @class = "form-control", /*type = "number",*/ @autoclomplete = "off" } })
+                    @Html.ValidationMessageFor(model => model.Clave, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        }
+        else { 
+            <div class="form-group">
+                @Html.LabelFor(model => model.Ult4DigProd, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.Ult4DigProd, new { htmlAttributes = new { @class = "form-control", /*type = "number",*/ @autoclomplete = "off" } })
+                    @Html.ValidationMessageFor(model => model.Ult4DigProd, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        }
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <div id="html_recaptcha"></div>
+                <button type="button" class="btn btn-default" id="btnAutenticar">Ingresar</button>
+                <!--<input type="submit" value="Ingresar" class="btn btn-default" id="btnAutenticar" />-->
+            </div>
+        </div>
+    </div>
+}
+
+<script type="text/javascript">
+    var onloadCallback = function () {
+        grecaptcha.render(
+            'html_recaptcha',
+            {
+                'sitekey': '@ViewBag.RecaptchaPublicKey',
+                'size': 'invisible',
+                'callback' : onSubmitLogin
+            }
+        );
+    };
+</script>
